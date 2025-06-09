@@ -523,6 +523,27 @@
 
         createKeyboard();
         submitWordButton.addEventListener('click', handleWordSubmit);
+
+        <script>
+    // Modal functionality for "How to Play"
+    const howToPlayButton = document.getElementById('howToPlayButton');
+    const howToPlayModal = document.getElementById('howToPlayModal');
+    const closeModalButton = document.getElementById('closeModalButton');
+
+    howToPlayButton.addEventListener('click', () => {
+        howToPlayModal.classList.remove('hidden');
+    });
+
+    closeModalButton.addEventListener('click', () => {
+        howToPlayModal.classList.add('hidden');
+    });
+
+    // Optional: Close modal when clicking outside the modal content
+    howToPlayModal.addEventListener('click', (e) => {
+        if (e.target === howToPlayModal) {
+            howToPlayModal.classList.add('hidden');
+        }
+    });
     </script>
 </body>
 </html>
