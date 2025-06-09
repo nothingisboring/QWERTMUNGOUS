@@ -20,32 +20,102 @@
             box-sizing: border-box;
             position: relative;
         }
-          h2 {
+        h2 {
             font-family: 'Montserrat', Sans-Serif;
             font-weight: 400;
-         }
+        }
 
-.city {
-  background-color: Indianred;
-  color: white;
-  padding: 10px;
-} 
+        .city {
+            background-color: Indianred;
+            color: white;
+            padding: 10px;
+        } 
 
-.bum {
-  background-color: Indianred;
-  color: white;
-  padding: 10px;
-} 
+        .bum {
+            background-color: Indianred;
+            color: white;
+            padding: 10px;
+        } 
 
-.arse {
-  background-color: steelblue;
-  color: white;
-  padding: 10px;
-} 
+        .arse {
+            background-color: steelblue;
+            color: white;
+            padding: 10px;
+        } 
 
-.city, .bum, .arse {
-  font-family: 'Montserrat';
-}
+        .city, .bum, .arse {
+            font-family: 'Montserrat';
+        }
+
+        /* Modal button styling */
+        #howToPlayButton {
+            position: fixed;
+            bottom: 1rem;
+            right: 1rem;
+            width: 3rem;
+            height: 3rem;
+            background-color: #2563eb;
+            color: white;
+            border-radius: 50%;
+            border: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            z-index: 50;
+            transition: background-color 0.3s ease;
+        }
+
+        #howToPlayButton:hover {
+            background-color: #374151;
+        }
+
+        /* Modal styling */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            max-width: 32rem;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        #closeModalButton {
+            background-color: #1f2937;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 0.25rem;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        #closeModalButton:hover {
+            background-color: #374151;
+        }
+
         #game-container {
             display: flex;
             flex-direction: column;
@@ -102,7 +172,7 @@
              border-color: #f87171;
              background-color: rgba(248, 113, 113, 0.3);
         }
-          .key.controlled.player2 {
+        .key.controlled.player2 {
              border-color: #38bdf8;
              background-color: rgba(56, 189, 248, 0.3);
         }
@@ -218,6 +288,15 @@
         .word-list::-webkit-scrollbar-thumb:hover {
             background-color: #9ca3af;
         }
+
+        /* Game info display */
+        #game-info {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: #d1d5db;
+            text-align: center;
+        }
+
         @media (max-width: 768px) {
             #keyboard {
                 grid-template-columns: repeat(10, 2.5rem);
@@ -291,52 +370,37 @@
             }
         }
     </style>
- <!-- Add this inside the <body> tag -->
-<button id="howToPlayButton" title="How to Play" 
-    class="fixed bottom-4 right-4 w-12 h-12 bg-blue-600 text-white rounded-full shadow-lg flex items-center justify-center text-lg hover:bg-gray-700 z-50">
-    ?
-</button>
-
-<!-- Add a hidden modal for instructions -->
-<div id="howToPlayModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-    <div class="bg-white p-6 rounded-lg shadow-lg max-w-lg w-full overflow-y-auto max-h-screen">
-    <h2 class="city">How to play <b>QWERTYMUNGOUS</b>, the spelling game about gaining the most keyboard territory</h2>
-    <p class="bum">
-    <b>1:</b> You word must begin with a letter from your side (red/blue).
- <br>
-           <b>2:</b> Then you try to use as many of your opponent's letters to gain territorial control.
-            <br>
-            <b>3:</b> Who will be the winner after the final word is submitted?
-            <br><br>
-                   </p>
-        
-
-        <button id="closeModalButton" class="bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-700 w-full">
-            Got it!
-        </button>
-    </div>
-</div>
-         </header>
-
-    <div id="message-area" class="h-10 mb-4 text-center font-medium"></div>
-
-    <div id="missing-link-grid" class="missing-link-grid">
-        </div>
-
-     <div id="solutions-modal-container"></div>
-
-  </head>
+</head>
 <body>
-    <div id="game-container">
-        <div id="keyboard">
+    <!-- Help button -->
+    <button id="howToPlayButton" title="How to Play">?</button>
+
+    <!-- Modal -->
+    <div id="howToPlayModal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <h2 class="city">How to play <b>QWERTYMUNGOUS</b>, the spelling game about gaining the most keyboard territory</h2>
+            <p class="bum">
+                <b>1:</b> Your word must begin with a letter from your side (red/blue).
+                <br>
+                <b>2:</b> Then you try to use as many of your opponent's letters to gain territorial control.
+                <br>
+                <b>3:</b> Each player gets exactly 5 turns. Who will control more territory after both players have submitted 5 words?
+                <br><br>
+            </p>
+            <button id="closeModalButton">Got it!</button>
         </div>
+    </div>
+
+    <div id="game-container">
+        <div id="keyboard"></div>
         <div id="word-input">
             <input type="text" id="word-input-box" placeholder="Enter word">
             <button id="submit-word">Submit</button>
         </div>
         <div id="current-player">Current Player: 1</div>
+        <div id="game-info">Player 1: 0/5 words | Player 2: 0/5 words</div>
         <div id="message-box">Welcome to QWERTY Territory Battle!</div>
-         <div class="word-list-container">
+        <div class="word-list-container">
             <div class="word-list-group">
                 <h3 class="word-list-title">Player 1 Words</h3>
                 <ul id="player1-words" class="word-list"></ul>
@@ -347,14 +411,21 @@
             </div>
         </div>
     </div>
+
     <script>
         const keyboardContainer = document.getElementById('keyboard');
         const wordInput = document.getElementById('word-input-box');
         const submitWordButton = document.getElementById('submit-word');
         const currentPlayerDisplay = document.getElementById('current-player');
         const messageBox = document.getElementById('message-box');
+        const gameInfoDisplay = document.getElementById('game-info');
         const player1WordsList = document.getElementById('player1-words');
         const player2WordsList = document.getElementById('player2-words');
+
+        // Modal elements
+        const howToPlayButton = document.getElementById('howToPlayButton');
+        const howToPlayModal = document.getElementById('howToPlayModal');
+        const closeModalButton = document.getElementById('closeModalButton');
 
         // Define the keyboard layout as an array of rows
         const keyboardRows = [
@@ -373,6 +444,21 @@
         let player2Words = [];
         let player1Plays = 0;
         let player2Plays = 0;
+
+        // Modal functionality
+        howToPlayButton.addEventListener('click', () => {
+            howToPlayModal.classList.remove('hidden');
+        });
+
+        closeModalButton.addEventListener('click', () => {
+            howToPlayModal.classList.add('hidden');
+        });
+
+        howToPlayModal.addEventListener('click', (e) => {
+            if (e.target === howToPlayModal) {
+                howToPlayModal.classList.add('hidden');
+            }
+        });
 
         function createKeyboard() {
             keyboardContainer.innerHTML = '';
@@ -396,11 +482,11 @@
             });
         }
 
-        const wordnikApiKey = 'e3fhwhs2eb3firt9fp41rh44e1aibhqfmwzeb5vdcmn8xpph4';  // Added API key
+        const wordnikApiKey = 'e3fhwhs2eb3firt9fp41rh44e1aibhqfmwzeb5vdcmn8xpph4';
 
         async function checkWordValidity(word) {
             if (!wordnikApiKey) {
-                console.warn("Wordnik API key is missing.  Word validity check will always pass (for testing).");
+                console.warn("Wordnik API key is missing. Word validity check will always pass (for testing).");
                 return true;
             }
             const url = `https://api.wordnik.com/v4/word.json/${word}/definitions?limit=1&api_key=${wordnikApiKey}`;
@@ -412,11 +498,11 @@
                     return false;
                 } else {
                     console.error('Wordnik API error:', response.status, await response.text());
-                    return true; // Return true to prevent blocking game
+                    return true;
                 }
             } catch (error) {
                 console.error('Error checking word:', error);
-                return true; // Return true to prevent blocking game
+                return true;
             }
         }
 
@@ -431,10 +517,10 @@
         }
 
         function updateBoardDisplay() {
-            for (const keyChar in board) {
-                const keyElement = document.querySelector(`.key:nth-child(${Array.from(keyboardContainer.querySelectorAll('.key')).findIndex(k => k.textContent === keyChar) + 1})`);
-                if (!keyElement) continue;
-
+            const keyElements = keyboardContainer.querySelectorAll('.key');
+            keyElements.forEach((keyElement, index) => {
+                const keyChar = keyElement.textContent;
+                
                 if (board[keyChar] === 1) {
                     keyElement.classList.add('player1', 'controlled');
                     keyElement.classList.remove('player2', 'empty');
@@ -445,39 +531,36 @@
                     keyElement.classList.remove('player1', 'player2', 'controlled');
                     keyElement.classList.add('empty');
                 }
-            }
+            });
+        }
+
+        function updateGameInfo() {
+            gameInfoDisplay.textContent = `Player 1: ${player1Plays}/5 words | Player 2: ${player2Plays}/5 words`;
         }
 
         function checkForWin() {
-            let player1ControlCount = 0;
-            let player2ControlCount = 0;
-            let totalControlled = 0;
-            let totalKeys = player1Keys.length + player2Keys.length;
+            // Check if both players have completed 5 turns
+            if (player1Plays >= 5 && player2Plays >= 5) {
+                let player1ControlCount = 0;
+                let player2ControlCount = 0;
 
-            for (const key in board) {
-                if (board[key] === 1) player1ControlCount++;
-                else if (board[key] === 2) player2ControlCount++;
-                if (board[key] !== 0) totalControlled++;
+                for (const key in board) {
+                    if (board[key] === 1) player1ControlCount++;
+                    else if (board[key] === 2) player2ControlCount++;
+                }
+
+                if (player1ControlCount > player2ControlCount) {
+                    messageBox.textContent = `Game Over! Player 1 wins with ${player1ControlCount} keys controlled!`;
+                } else if (player2ControlCount > player1ControlCount) {
+                    messageBox.textContent = `Game Over! Player 2 wins with ${player2ControlCount} keys controlled!`;
+                } else {
+                    messageBox.textContent = `Game Over! It's a tie with ${player1ControlCount} keys each!`;
+                }
+
+                gameOver = true;
+                submitWordButton.disabled = true;
+                wordInput.disabled = true;
             }
-
-            if (totalControlled < totalKeys) {
-                return; // Game should continue, as not all keys are contested
-            }
-
-            if (player1Plays < 5 || player2Plays < 5) {
-                return;
-            }
-
-            if (player1ControlCount > player2ControlCount) {
-                messageBox.textContent = 'Player 1 wins!';
-            } else if (player2ControlCount > player1ControlCount) {
-                messageBox.textContent = 'Player 2 wins!';
-            } else {
-                messageBox.textContent = "It's a tie!";
-            }
-
-            gameOver = true;
-            submitWordButton.disabled = true;
         }
 
         function handleWordSubmit() {
@@ -489,7 +572,7 @@
                 return;
             }
 
-            // Check that the word starts with a letter controlled by the current player.
+            // Check that the word starts with a letter controlled by the current player
             const startingLetter = word[0];
             if (currentPlayer === 1 && board[startingLetter] !== 1) {
                 messageBox.textContent = 'Word must start with a letter you control.';
@@ -501,7 +584,6 @@
                 wordInput.value = '';
                 return;
             }
-
 
             checkWordValidity(word).then(isValidWord => {
                 if (!isValidWord) {
@@ -516,60 +598,57 @@
                     (currentPlayer === 2 && board[key] === 1)
                 );
 
-                if (opponentControlledKeys.length === 0) {
-                    messageBox.textContent = 'No opponent-controlled letters taken. Switching turn!';
+                // Capture opponent's keys
+                opponentControlledKeys.forEach(key => board[key] = currentPlayer);
+                updateBoardDisplay();
+
+                // Add word to player's list
+                if (currentPlayer === 1) {
+                    player1Words.push(word);
+                    player1WordsList.innerHTML = player1Words.map(w => `<li>${w}</li>`).join('');
+                    player1Plays++;
                 } else {
-                    opponentControlledKeys.forEach(key => board[key] = currentPlayer);
-                    updateBoardDisplay();
-                    messageBox.textContent = `${word} captured ${opponentControlledKeys.length} letters!`;
-                    if (currentPlayer === 1) {
-                        player1Words.push(word);
-                        player1WordsList.innerHTML = player1Words.map(w => `<li>${w}</li>`).join('');
-                        player1Plays++;
-                    } else {
-                        player2Words.push(word);
-                        player2WordsList.innerHTML = player2Words.map(w => `<li>${w}</li>`).join('');
-                        player2Plays++;
-                    }
+                    player2Words.push(word);
+                    player2WordsList.innerHTML = player2Words.map(w => `<li>${w}</li>`).join('');
+                    player2Plays++;
                 }
 
-                switchPlayer();
+                // Update displays
+                updateGameInfo();
+
+                if (opponentControlledKeys.length === 0) {
+                    messageBox.textContent = `${word} submitted! No opponent letters captured.`;
+                } else {
+                    messageBox.textContent = `${word} captured ${opponentControlledKeys.length} letters!`;
+                }
+
+                // Check for game end before switching players
                 checkForWin();
+                
+                if (!gameOver) {
+                    switchPlayer();
+                }
+                
                 wordInput.value = '';
             });
         }
 
-        // Function to switch between players
         function switchPlayer() {
             currentPlayer = (currentPlayer === 1) ? 2 : 1;
             currentPlayerDisplay.textContent = `Current Player: ${currentPlayer}`;
-            wordInput.disabled = false;
-            submitWordButton.disabled = false;
         }
 
+        // Initialize game
         createKeyboard();
+        updateGameInfo();
+        
+        // Event listeners
         submitWordButton.addEventListener('click', handleWordSubmit);
-
-        <script>
-    // Modal functionality for "How to Play"
-    const howToPlayButton = document.getElementById('howToPlayButton');
-    const howToPlayModal = document.getElementById('howToPlayModal');
-    const closeModalButton = document.getElementById('closeModalButton');
-
-    howToPlayButton.addEventListener('click', () => {
-        howToPlayModal.classList.remove('hidden');
-    });
-
-    closeModalButton.addEventListener('click', () => {
-        howToPlayModal.classList.add('hidden');
-    });
-
-    // Optional: Close modal when clicking outside the modal content
-    howToPlayModal.addEventListener('click', (e) => {
-        if (e.target === howToPlayModal) {
-            howToPlayModal.classList.add('hidden');
-        }
-    });
+        wordInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                handleWordSubmit();
+            }
+        });
     </script>
 </body>
 </html>
